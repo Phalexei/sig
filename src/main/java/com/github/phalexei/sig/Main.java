@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import sig.Database;
+import com.github.phalexei.sig.database.Utils;
 
 public class Main {
 	
@@ -23,7 +23,7 @@ public class Main {
      */
     private void callSQLQuery(){
     	
-    	Connection db = Database.getConnection();
+    	Connection db = Utils.getConnection();
     	
     	try 
         {
