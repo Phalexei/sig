@@ -1,4 +1,4 @@
-package sig;
+package com.github.phalexei.sig.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
