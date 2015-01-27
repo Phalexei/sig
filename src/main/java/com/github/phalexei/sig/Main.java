@@ -10,12 +10,12 @@ public class Main {
 
 	public Main(String arg0) {
 		
-		//3 rows expected. 3 row found. It misses Latitude and Longitude
+		//Question 9 : OK using arg = "Dom__ne _niversit" (2 words)
 		if (!arg0.isEmpty()){
 			callSQLQueryQ9(arg0);
 		}
 		
-		// TODO : after question 9.
+		// TODO : other questions using UI
 		//GeoMainFrame frame = new GeoMainFrame("frame",new MapPanel(100, 100, 100));
 	}
 
@@ -33,8 +33,7 @@ public class Main {
 		Connection conn = Utils.getConnection();
 		
 		//make SQL request
-		//TODO : Add Latitude and Longitude in the SQL request
-		String request = "select tags->'name' as nom from nodes where tags->'name' like ? || '%'";
+		String request = "select tags->'name' as nom, ST_X(geom) as longitude, ST_Y(geom) as latitude from nodes where tags->'name' like ? || '%'";
 		
 		try {
 			//prepare statement
@@ -47,7 +46,7 @@ public class Main {
 			ResultSet rs = stmt.executeQuery();
 			//display result
 			while (rs.next()) { 
-				System.out.println("nom = " + rs.getString(1));
+				System.out.println("nom = " + rs.getString(1)+", longitude = "+rs.getDouble(2)+", latitude = "+rs.getDouble(3));
 			}
 			rs.close();
 			stmt.close();
