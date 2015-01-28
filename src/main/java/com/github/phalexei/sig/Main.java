@@ -4,6 +4,8 @@ import com.github.phalexei.sig.database.Utils;
 import com.github.phalexei.sig.gui.GeoMainFrame;
 import com.github.phalexei.sig.gui.LineString;
 import com.github.phalexei.sig.gui.MapPanel;
+import com.github.phalexei.sig.gui.Polygon;
+import org.postgis.PGgeometry;
 import org.postgis.Point;
 
 import java.awt.*;
@@ -14,10 +16,10 @@ public class Main {
 
     public Main(String arg) {
         if (!arg.isEmpty()) {
-            question9(arg);
+            //question9(arg);
         }
 
-        question10();
+        question11a();
     }
 
     public static void main(String[] args) {
@@ -105,9 +107,43 @@ public class Main {
     }
 
     /**
-     * Question 11
+     * Question 11a
      */
-    private void question11() {
+    private void question11a() {
+        // Get DB connection
+        Connection connection = Utils.getConnection();
+        try {
+            //prepare statement
+            Statement statement = connection.createStatement();
 
+            //execute request
+            ResultSet resultSet = statement.executeQuery("select count(n.id), q.the_geom FROM nodes n, quartier q " +
+                    "WHERE n.tags->'shop' = 'bakery' and ST_Intersects(ST_Transform(q.the_geom,4326), n.geom) " +
+                    "GROUP BY q.the_geom ORDER BY count desc;");
+
+            MapPanel panel = new MapPanel(919000, 6450000, 1000);
+            Color[] colors = {Color.BLACK, Color.RED, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN,
+                    Color.MAGENTA, Color.YELLOW};
+            while (resultSet.next()) {
+                System.out.println("kek");
+                PGgeometry g = (PGgeometry) resultSet.getObject(2);
+                int count = resultSet.getInt(1);
+                Color theColor = colors[Math.min(count, colors.length-1)];
+                com.github.phalexei.sig.gui.Polygon poly = new Polygon(theColor, theColor);
+
+                for (int i = 0; i < g.getGeometry().numPoints(); i++) {
+                    poly.addPoint(new com.github.phalexei.sig.gui.Point(g.getGeometry().getPoint(i).getX(), g.getGeometry().getPoint(i).getY()));
+                    System.out.print("g.getPoint(i).getX() = " + g.getGeometry().getPoint(i).getX());
+                    System.out.println("g.getPoint(i).getY() = " + g.getGeometry().getPoint(i).getY());
+                }
+                panel.addPrimitive(poly);
+            }
+            resultSet.close();
+            statement.close();
+            new GeoMainFrame("Question 11a", panel);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
