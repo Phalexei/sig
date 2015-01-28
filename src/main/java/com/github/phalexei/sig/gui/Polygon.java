@@ -4,18 +4,16 @@
  */
 package com.github.phalexei.sig.gui;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.util.Iterator;
 
 /**
  * A polygon (roughly a sequence of points, interpreted as a closed shape).
+ *
  * @author Sylvain B.
  * @version 1.0
  */
 public class Polygon implements GraphicalPrimitive {
-    private LineString ls;
-    
     /**
      * The fill color of the shape.
      */
@@ -24,18 +22,20 @@ public class Polygon implements GraphicalPrimitive {
      * The drawing color of the shape
      */
     public Color drawColor;
-    
+    private LineString ls;
+
     /**
      * Initializes an empty polygon (with no point at the beginning).
+     *
      * @param drawColor the drawing color.
      * @param fillColor the fill color.
      */
     public Polygon(Color drawColor, Color fillColor) {
         this.drawColor = drawColor;
         this.fillColor = fillColor;
-        this.ls = new LineString();        
+        this.ls = new LineString();
     }
-    
+
     /**
      * Initializes an empty polygon (with no point at the beginning) with default drawing color (strong gray, half opacity)
      * and default fill color (gray, half opacity).
@@ -43,11 +43,11 @@ public class Polygon implements GraphicalPrimitive {
     public Polygon() {
         this(new Color(200, 200, 200, 220), new Color(100, 100, 100, 120));
     }
-    
+
     @Override
     public void draw(Graphics2D g2d, CoordinateConverter converter) {
         Color oldDC = g2d.getColor();
-        Iterator<Point> iter = ls.iterator();        
+        Iterator<Point> iter = ls.iterator();
         java.awt.Polygon poly = new java.awt.Polygon();
         while (iter.hasNext()) {
             Point p1 = iter.next();
@@ -67,6 +67,7 @@ public class Polygon implements GraphicalPrimitive {
 
     /**
      * Adds a point to the polygon (at the end of the current sequence).
+     *
      * @param point the point to be added.
      */
     public void addPoint(Point point) {
