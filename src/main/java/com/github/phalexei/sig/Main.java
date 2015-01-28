@@ -55,6 +55,7 @@ public class Main {
             //execute request
             ResultSet resultSet = statement.executeQuery();
             //display result
+            System.out.println("Résultats question 9 :");
             while (resultSet.next()) {
                 System.out.println("nom = " + resultSet.getString(1) + ", longitude = " + resultSet.getDouble(2) + ", latitude = " + resultSet.getDouble(3));
             }
@@ -81,7 +82,6 @@ public class Main {
                     "(ST_MakeBox2D(ST_Point(5.7, 45.1), ST_Point(5.8, 45.2)), 4326), linestring)" +
                     "AND tags ? 'highway'");
 
-            //MapPanel panel = new MapPanel(5.75, 45.15, 0.25);
             MapPanel panel = new MapPanel(919000, 6450000, 1000);
             Random random = new Random();
             //display result
@@ -92,14 +92,12 @@ public class Main {
                 for (int i = 0; i < lineString.getGeometry().numPoints() - 1; i++) {
                     Point point = lineString.getGeometry().getPoint(i);
                     guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
-                    System.out.print("point.getX() = " + point.getX());
-                    System.out.println(":point.getY() = " + point.getY());
                 }
                 panel.addPrimitive(guiLineString);
             }
             resultSet.close();
             statement.close();
-            new GeoMainFrame("frame", panel);
+            new GeoMainFrame("Question 10", panel);
         } catch (SQLException se) {
             System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
