@@ -15,15 +15,15 @@ import java.util.Random;
 public class Main {
 
     public Main(String arg) {
-       /* if (!arg.isEmpty()) {
+        if (!arg.isEmpty()) {
             question9(arg);
-        }*/
+        }
 
-        //question10_A();
+        question10_A();
 
-        //question10_B();
-//    	question10_C();
-//        question11a();
+        question10_B();
+    	question10_C();
+    	question11a();
 		question11b();
     }
 
@@ -75,7 +75,7 @@ public class Main {
     }
 
     /**
-     * Question 10
+     * Question 10 A
      */
     private void question10_A() {
         // Get DB connection
@@ -91,7 +91,7 @@ public class Main {
 
             MapPanel panel = new MapPanel(919000, 6450000, 1000);
             Random random = new Random();
-            //display result
+            //get result
             while (resultSet.next()) {
                 org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(1));
 
@@ -105,7 +105,10 @@ public class Main {
             }
             resultSet.close();
             statement.close();
+            
+            //display result
             new GeoMainFrame("Question 10", panel);
+            
         } catch (SQLException se) {
             System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
@@ -113,7 +116,7 @@ public class Main {
     }
 
     /**
-     * Question 10
+     * Question 10 B
      */
     private void question10_B() {
 
@@ -130,7 +133,7 @@ public class Main {
 
             MapPanel panel = new MapPanel(919000, 6450000, 1000);
             Random random = new Random();
-            //display result
+            //get result
             while (resultSet.next()) {
                 org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(1));
 
@@ -145,7 +148,10 @@ public class Main {
             }
             resultSet.close();
             statement.close();
+            
+            //display result
             new GeoMainFrame("frame", panel);
+        
         } catch (SQLException se) {
             System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
@@ -154,7 +160,7 @@ public class Main {
     }
 
     /**
-     * Question 10
+     * Question 10 C
      */
     private void question10_C() {
 
@@ -169,7 +175,7 @@ public class Main {
 
             MapPanel panel = new MapPanel(698750, 6620131, 300000);
             Random random = new Random();
-            //display result
+            //get result
             while (resultSet.next()) {
                 org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(1));
 
@@ -178,13 +184,14 @@ public class Main {
                     Point point = lineString.getGeometry().getPoint(i);
                     guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
                 }
-               // com.github.phalexei.sig.gui.Point first = new com.github.phalexei.sig.gui.Point(lineStringBruit.getGeometry().getPoint(0).getX(), lineStringBruit.getGeometry().getPoint(0).getY());
-               // guiLineString.addPoint(first);
                 panel.addPrimitive(guiLineString);
             }
             resultSet.close();
             statement.close();
+            
+            //display result
             new GeoMainFrame("frame", panel);
+            
         } catch (SQLException se) {
             System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
@@ -193,7 +200,7 @@ public class Main {
     }
 
     /**
-     * Question 11a
+     * Question 11 A
      */
     private void question11a() {
         // Get DB connection
@@ -210,7 +217,7 @@ public class Main {
             MapPanel panel = new MapPanel(919000, 6450000, 1000);
 
             Color[] colors = {Color.WHITE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.BLUE, Color.RED, Color.DARK_GRAY, Color.BLACK};
-
+            //get result
             while (resultSet.next()) {
                 PGgeometry g = (PGgeometry) resultSet.getObject(2);
                 int count = resultSet.getInt(1);
@@ -224,6 +231,8 @@ public class Main {
             }
             resultSet.close();
             statement.close();
+            
+            //display result
             new GeoMainFrame("Question 11a", panel);
 
         } catch (SQLException e) {
@@ -232,21 +241,34 @@ public class Main {
     }
 
 	/**
-     * Question 11b
+     * Question 11 B
      */
     private void question11b() {
-        // Get DB connection
         MapPanel panel = new MapPanel(844767, 6523077, 200000);
+        //get result for railway
 		drawNoisyArea("railway", "rail", Color.RED, Color.GREEN, panel);
+		 //get result for highway
 		drawNoisyArea("highway", "motorway", Color.BLUE, Color.YELLOW, panel);
+		 //get result for aeroway
 		drawNoisyArea("aeroway", "aerodrome", Color.WHITE, Color.BLACK, panel);
+		//display result
 		new GeoMainFrame("Question 11b", panel);
 
     }
 
+    /**
+     * Allow to fill the UI panel
+     * @param key : tags->'key'
+     * @param value tags->'key' = 'value'
+     * @param colorLine road's color
+     * @param colorNoise noise's color
+     * @param panel map's panel
+     */
 	private void drawNoisyArea(String key, String value, Color colorLine, Color colorNoise, MapPanel panel) {
-Connection connection = Utils.getConnection();
-        try {
+		 // Get DB connection
+		Connection connection = Utils.getConnection();
+        
+		try {
             //prepare statement
             Statement statement = connection.createStatement();
 
@@ -254,7 +276,7 @@ Connection connection = Utils.getConnection();
             ResultSet resultSet = statement.executeQuery("select ST_Buffer(ST_Transform(linestring, 2154), 300), " +
 				"ST_Transform(linestring, 2154) from ways " +
 				"WHERE tags->'" + key + "' = '" + value + "' ");
-
+            //get result
             while (resultSet.next()) {
                 org.postgis.PGgeometry lineStringBruit = ((org.postgis.PGgeometry) resultSet.getObject(1));
 				org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(2));
