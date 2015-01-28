@@ -83,7 +83,7 @@ public class Main {
 		p.addPoint(p3);
 		p.addPoint(p4);
 		p.addPoint(p2);
-		// attention à l'ordre pour dessiner la figure
+		// attention ï¿½ l'ordre pour dessiner la figure
 		
 		MapPanel map = new MapPanel(100, 100, 500);
 		map.addPrimitive(linestring);
@@ -99,12 +99,16 @@ public class Main {
 	
 	public static String parseArguments(String[] args){
 		String st = "";
+		
 		for(int i = 0; i<args.length; i++){
 			System.out.println(args[i]);
 			st = st.concat(args[i]);
 			st = st.concat(" ");
 		}
-		st = st.substring(0, st.length() -1);
+		if(!st.isEmpty()){
+			st = st.substring(0, st.length() -1);
+		}
+		
 		return st;
 	}
 }
