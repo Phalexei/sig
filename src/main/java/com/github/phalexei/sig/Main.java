@@ -13,10 +13,9 @@ import java.util.Random;
 public class Main {
 
     public Main(String arg) {
-        //Question 9 : OK using arg = "Dom__ne _niversit" (2 words)
-       /* if (!arg.isEmpty()) {
+        if (!arg.isEmpty()) {
             question9(arg);
-        }*/
+        }
 
         //question10_A();
         
@@ -58,6 +57,7 @@ public class Main {
             //execute request
             ResultSet resultSet = statement.executeQuery();
             //display result
+            System.out.println("Résultats question 9 :");
             while (resultSet.next()) {
                 System.out.println("nom = " + resultSet.getString(1) + ", longitude = " + resultSet.getDouble(2) + ", latitude = " + resultSet.getDouble(3));
             }
@@ -84,7 +84,6 @@ public class Main {
                     "(ST_MakeBox2D(ST_Point(5.7, 45.1), ST_Point(5.8, 45.2)), 4326), linestring)" +
                     "AND tags ? 'highway'");
 
-            //MapPanel panel = new MapPanel(5.75, 45.15, 0.25);
             MapPanel panel = new MapPanel(919000, 6450000, 1000);
             Random random = new Random();
             //display result
@@ -101,7 +100,7 @@ public class Main {
             }
             resultSet.close();
             statement.close();
-            new GeoMainFrame("frame", panel);
+            new GeoMainFrame("Question 10", panel);
         } catch (SQLException se) {
             System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
