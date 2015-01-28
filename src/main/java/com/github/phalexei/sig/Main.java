@@ -20,10 +20,11 @@ public class Main {
         }*/
 
         //question10_A();
-        
+
         //question10_B();
-    	question10_C();
-        question11a();
+//    	question10_C();
+//        question11a();
+		question11b();
     }
 
     public static void main(String[] args) {
@@ -99,7 +100,7 @@ public class Main {
                     Point point = lineString.getGeometry().getPoint(i);
                     guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
                 }
-               
+
                 panel.addPrimitive(guiLineString);
             }
             resultSet.close();
@@ -151,7 +152,7 @@ public class Main {
         }
 
     }
-    
+
     /**
      * Question 10
      */
@@ -177,7 +178,7 @@ public class Main {
                     Point point = lineString.getGeometry().getPoint(i);
                     guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
                 }
-               // com.github.phalexei.sig.gui.Point first = new com.github.phalexei.sig.gui.Point(lineString.getGeometry().getPoint(0).getX(), lineString.getGeometry().getPoint(0).getY());
+               // com.github.phalexei.sig.gui.Point first = new com.github.phalexei.sig.gui.Point(lineStringBruit.getGeometry().getPoint(0).getX(), lineStringBruit.getGeometry().getPoint(0).getY());
                // guiLineString.addPoint(first);
                 panel.addPrimitive(guiLineString);
             }
@@ -188,7 +189,7 @@ public class Main {
             System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
         }
-    	
+
     }
 
     /**
@@ -207,10 +208,10 @@ public class Main {
                     "GROUP BY q.the_geom ORDER BY count desc;");
 
             MapPanel panel = new MapPanel(919000, 6450000, 1000);
-            Color[] colors = {Color.BLACK, Color.RED, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN,
-                    Color.MAGENTA, Color.YELLOW};
+
+            Color[] colors = {Color.WHITE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.BLUE, Color.RED, Color.DARK_GRAY, Color.BLACK};
+
             while (resultSet.next()) {
-                System.out.println("kek");
                 PGgeometry g = (PGgeometry) resultSet.getObject(2);
                 int count = resultSet.getInt(1);
                 Color theColor = colors[Math.min(count, colors.length-1)];
@@ -218,8 +219,6 @@ public class Main {
 
                 for (int i = 0; i < g.getGeometry().numPoints(); i++) {
                     poly.addPoint(new com.github.phalexei.sig.gui.Point(g.getGeometry().getPoint(i).getX(), g.getGeometry().getPoint(i).getY()));
-                    System.out.print("g.getPoint(i).getX() = " + g.getGeometry().getPoint(i).getX());
-                    System.out.println("g.getPoint(i).getY() = " + g.getGeometry().getPoint(i).getY());
                 }
                 panel.addPrimitive(poly);
             }
@@ -231,4 +230,54 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+	/**
+     * Question 11b
+     */
+    private void question11b() {
+        // Get DB connection
+        MapPanel panel = new MapPanel(844767, 6523077, 200000);
+		drawNoisyArea("railway", "rail", Color.RED, Color.GREEN, panel);
+		drawNoisyArea("highway", "motorway", Color.BLUE, Color.YELLOW, panel);
+		drawNoisyArea("aeroway", "aerodrome", Color.WHITE, Color.BLACK, panel);
+		new GeoMainFrame("Question 11b", panel);
+
+    }
+
+	private void drawNoisyArea(String key, String value, Color colorLine, Color colorNoise, MapPanel panel) {
+Connection connection = Utils.getConnection();
+        try {
+            //prepare statement
+            Statement statement = connection.createStatement();
+
+            //execute request
+            ResultSet resultSet = statement.executeQuery("select ST_Buffer(ST_Transform(linestring, 2154), 300), " +
+				"ST_Transform(linestring, 2154) from ways " +
+				"WHERE tags->'" + key + "' = '" + value + "' ");
+
+            while (resultSet.next()) {
+                org.postgis.PGgeometry lineStringBruit = ((org.postgis.PGgeometry) resultSet.getObject(1));
+				org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(2));
+
+				com.github.phalexei.sig.gui.Polygon poly = new Polygon(colorNoise, colorNoise);
+				LineString guiLineString = new LineString(colorLine);
+
+                for (int i = 0; i < lineStringBruit.getGeometry().numPoints() - 1; i++) {
+                    Point point = lineStringBruit.getGeometry().getPoint(i);
+                    poly.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
+                }
+				for (int i = 0; i < lineString.getGeometry().numPoints() - 1; i++) {
+                    Point point = lineString.getGeometry().getPoint(i);
+                    guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
+                }
+                panel.addPrimitive(poly);
+				panel.addPrimitive(guiLineString);
+            }
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
 }
