@@ -1,11 +1,7 @@
 package com.github.phalexei.sig;
 
 import com.github.phalexei.sig.database.Utils;
-import com.github.phalexei.sig.gui.*;
-import com.github.phalexei.sig.gui.Point;
-import com.github.phalexei.sig.gui.Polygon;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,7 +40,7 @@ public class Main {
     /**
      * Question 9
      */
-    private void question9(String arg) {
+    private void question9(String name) {
         // Get DB connection
         Connection connection = Utils.getConnection();
 
@@ -54,7 +50,7 @@ public class Main {
                     "select tags->'name' as nom, ST_X(geom) as longitude," +
                             " ST_Y(geom) as latitude from nodes where tags->'name' like ? || '%'");
             //add string
-            statement.setString(1, arg);
+            statement.setString(1, name);
             //display request
             System.out.println(statement.toString());
             //execute request
@@ -73,35 +69,6 @@ public class Main {
     }
 
     private void question10() {
-        Point p1 = new Point(15.758102, 45.187486500000006, Color.BLUE);
-        Point p2 = new Point(14.7680106, 145.192893000000005, Color.RED);
-
-        Point p3 = new Point(50.758102, 50.187486500000006, Color.BLUE);
-        Point p4 = new Point(48.7680106, 160.192893000000005, Color.RED);
-
-        Point p5 = new Point(3.758102, 20.187486500000006, Color.BLUE);
-        Point p6 = new Point(2.7680106, 120.192893000000005, Color.RED);
-
-        LineString linestring = new LineString(Color.YELLOW);
-        linestring.addPoint(p5);
-        linestring.addPoint(p6);
-
-        Polygon p = new Polygon(Color.BLACK, Color.CYAN);
-        p.addPoint(p1);
-        p.addPoint(p3);
-        p.addPoint(p4);
-        p.addPoint(p2);
-        // attention à l'ordre pour dessiner la figure
-
-        MapPanel map = new MapPanel(100, 100, 500);
-        map.addPrimitive(linestring);
-        map.addPrimitive(p5);
-        map.addPrimitive(p6);
-        map.addPrimitive(p);
-
-        new GeoMainFrame("frame", map);
-
-        // MAIS C'EST DE LA MERDE CE TP ...
 
     }
 }

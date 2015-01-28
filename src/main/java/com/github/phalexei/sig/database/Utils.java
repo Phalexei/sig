@@ -15,13 +15,11 @@ import java.util.logging.Logger;
  */
 public class Utils {
     private static Connection connection;
-    private static String login = "chretiea";
-    private static String password = "chretiea";
-
+    private static String LOGIN = "chretiea";
+    private static String PASSWORD = "chretiea";
 
     public static Connection getConnection() {
-        if (connection != null) return connection;
-        return createConnection();
+        return connection == null ? createConnection() : connection;
     }
 
     private static Connection createConnection() {
@@ -31,7 +29,7 @@ public class Utils {
             Class.forName("org.postgresql.Driver");
             Logger.getLogger(Utils.class.getName()).log(Level.INFO, "Trying to connect to Grenoble database...");
             String url = "jdbc:postgresql://ensibd.imag.fr:5432/osm";
-            conn = DriverManager.getConnection(url, login, password);
+            conn = DriverManager.getConnection(url, LOGIN, PASSWORD);
             Logger.getLogger(Utils.class.getName()).log(Level.INFO, "Connected.");
             ((org.postgresql.PGConnection) conn).addDataType("geometry", Class.forName("org.postgis.PGgeometry"));
             ((org.postgresql.PGConnection) conn).addDataType("box3d", Class.forName("org.postgis.PGbox3d"));
