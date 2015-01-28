@@ -13,12 +13,10 @@ import java.util.Random;
 public class Main {
 
     public Main(String arg) {
-        //Question 9 : OK using arg = "Dom__ne _niversit" (2 words)
-       /* if (!arg.isEmpty()) {
+        if (!arg.isEmpty()) {
             question9(arg);
-        }*/
+        }
 
-        // TODO : other questions using UI
         question10();
     }
 
