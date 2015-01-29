@@ -38,7 +38,7 @@ public abstract class Question {
                     case 'c':
                         return new Question10c();
                     default:
-                        throw new IllegalArgumentException("Question 10 only has variants A, B or C." + questionLetter + " is invalid");
+                        throw new IllegalArgumentException("Question 10 only has variants a, b or c." + questionLetter + " is invalid");
                 }
             case 11:
                 switch (Character.toLowerCase(questionLetter)) {
@@ -49,7 +49,7 @@ public abstract class Question {
                     case 'c':
                         return new Question11c();
                     default:
-                        throw new IllegalArgumentException("Question 11 only has variants A, B or C." + questionLetter + " is invalid");
+                        throw new IllegalArgumentException("Question 11 only has variants a, b or c." + questionLetter + " is invalid");
                 }
             default:
                 throw new IllegalArgumentException("You must choose from question 9, 10 or 11");
