@@ -1,7 +1,6 @@
 package com.github.phalexei.sig;
 
 import com.github.phalexei.sig.questions.Question;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 public class Main {
 
@@ -15,32 +14,10 @@ public class Main {
      *             <li> Question11_B : 11 B
      */
     public static void main(String[] args) {
-<<<<<<< HEAD
-        
-        if(args[0].equals("9")){
-        	new Main().question9(parseArguments(args));
-        }else if (args[0].equals("10") && args[1].equals("A")){
-        	new Main().question10_A();
-        }else if (args[0].equals("10") && args[1].equals("B")){
-        	new Main().question10_B();
-        }else if (args[0].equals("10") && args[1].equals("C")){
-        	new Main().question10_C();
-        }else if (args[0].equals("11") && args[1].equals("A")){
-        	new Main().question11_A();
-        }else if (args[0].equals("11") && args[1].equals("B")){
-        	new Main().question11_B();
-        }else if (args[0].equals("11") && args[1].equals("C")){
-        	new Main().question11_C();
-        }
-        else{
-        	System.out.println("Mauvais arguments");
-        	return;
-=======
         try {
             parseArguments(args).answer();
-        } catch (InvalidArgumentException e) {
-            System.out.println(e.getRealMessage());
->>>>>>> 4711f3c1ed4888f0ec7cdfd767e016e57113ecbb
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -50,7 +27,7 @@ public class Main {
      * @param args : array args (from main)
      * @return
      */
-    public static Question parseArguments(String[] args) throws InvalidArgumentException {
+    public static Question parseArguments(String[] args) throws IllegalArgumentException {
 
         int questionNumber = Integer.parseInt(args[0]);
         Character questionLetter = null;
@@ -71,98 +48,4 @@ public class Main {
 
         return Question.newQuestion(questionNumber, questionLetter, s.toString());
     }
-<<<<<<< HEAD
-    
-    /**
-     * Question 11 C
-     */
-    private void question11_C() {
-
-        // Get DB connection
-        Connection connection = Utils.getConnection();
-        try {
-            //prepare statement
-            Statement statement = connection.createStatement();
-
-            //execute request
-            ResultSet resultSet = statement.executeQuery("SELECT ST_Transform(linestring, 27563) from ways " +
-                    "where tags ? 'building' order by ST_YMin(linestring), St_XMin(linestring) limit 10;");
-
-            MapPanel panel = new MapPanel(919000, 6450000, 1000);
-            Random random = new Random();
-            //get result
-            while (resultSet.next()) {
-//                org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(1));
-//
-//                LineString guiLineString = new LineString(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-//                for (int i = 0; i < lineString.getGeometry().numPoints() - 1; i++) {
-//                    Point point = lineString.getGeometry().getPoint(i);
-//                    guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
-//                }
-//                com.github.phalexei.sig.gui.Point first = new com.github.phalexei.sig.gui.Point(lineString.getGeometry().getPoint(0).getX(), lineString.getGeometry().getPoint(0).getY());
-//                guiLineString.addPoint(first);
-//                panel.addPrimitive(guiLineString);
-                System.out.println(resultSet.getObject(1).toString());
-            }
-            resultSet.close();
-            statement.close();
-            
-            //display result
-//            new GeoMainFrame("frame", panel);
-        
-        } catch (SQLException se) {
-            System.err.println("Threw a SQLException creating the list of blogs.");
-            System.err.println(se.getMessage());
-        }
-
-    }
-
-    /**
-     * Allow to fill the UI panel
-     * @param key : tags->'key'
-     * @param value tags->'key' = 'value'
-     * @param colorLine road's color
-     * @param colorNoise noise's color
-     * @param panel map's panel
-     */
-	private void drawNoisyArea(String key, String value, Color colorLine, Color colorNoise, MapPanel panel) {
-		 // Get DB connection
-		Connection connection = Utils.getConnection();
-        
-		try {
-            //prepare statement
-            Statement statement = connection.createStatement();
-
-            //execute request
-            ResultSet resultSet = statement.executeQuery("select ST_Buffer(ST_Transform(linestring, 2154), 300), " +
-				"ST_Transform(linestring, 2154) from ways " +
-				"WHERE tags->'" + key + "' = '" + value + "' ");
-            //get result
-            while (resultSet.next()) {
-                org.postgis.PGgeometry lineStringBruit = ((org.postgis.PGgeometry) resultSet.getObject(1));
-				org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(2));
-
-				com.github.phalexei.sig.gui.Polygon poly = new Polygon(colorNoise, colorNoise);
-				LineString guiLineString = new LineString(colorLine);
-
-                for (int i = 0; i < lineStringBruit.getGeometry().numPoints() - 1; i++) {
-                    Point point = lineStringBruit.getGeometry().getPoint(i);
-                    poly.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
-                }
-				for (int i = 0; i < lineString.getGeometry().numPoints() - 1; i++) {
-                    Point point = lineString.getGeometry().getPoint(i);
-                    guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
-                }
-                panel.addPrimitive(poly);
-				panel.addPrimitive(guiLineString);
-            }
-            resultSet.close();
-            statement.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-	}
-=======
->>>>>>> 4711f3c1ed4888f0ec7cdfd767e016e57113ecbb
 }
