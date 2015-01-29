@@ -7,11 +7,12 @@ public class Main {
     /**
      * @param args Arguments for
      *             <li> Question9 : 9 dom__ne uni_er_it%
-     *             <li> Question10_A : 10 A
-     *             <li> Question10_B : 10 B
-     *             <li> Question10_C : 10 C
-     *             <li> Question11_A : 11 A
-     *             <li> Question11_B : 11 B
+     *             <li> Question10_A : 10 a
+     *             <li> Question10_B : 10 b
+     *             <li> Question10_C : 10 c
+     *             <li> Question11_A : 11 a
+     *             <li> Question11_B : 11 b
+     *             <li> Question11_B : 11 c
      */
     public static void main(String[] args) {
         try {
