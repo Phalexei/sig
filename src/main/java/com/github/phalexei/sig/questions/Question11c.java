@@ -7,38 +7,68 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 
+import org.postgis.Point;
+
 public class Question11c extends Question {
     @Override
     public void answerInternal() {
         try {
             //prepare statement
             Statement statement = this.getConnection().createStatement();
-
-            //execute request
-            ResultSet resultSet = statement.executeQuery("SELECT ST_Transform(linestring, 27563) from ways " +
-                    "where tags ? 'building' order by ST_YMin(linestring), St_XMin(linestring) limit 10;");
-
-            MapPanel panel = new MapPanel(919000, 6450000, 1000);
-            Random random = new Random();
-            //get result
+            
+            
+            //get minimal and maximal point
+            ResultSet resultSet = statement.executeQuery("SELECT "
+            		+ "min(ST_XMin(linestring)), min(ST_YMin(linestring)), max(ST_XMax(linestring)),max(ST_YMax(linestring)) "
+            		+ " from ways where tags ? 'building'");
+         
+            double xMin = 0, xMax = 0, yMin = 0, yMax = 0;
+          
             while (resultSet.next()) {
-                // org.postgis.PGgeometry lineString = ((org.postgis.PGgeometry) resultSet.getObject(1));
-                //
-                // LineString guiLineString = new LineString(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-                // for (int i = 0; i < lineString.getGeometry().numPoints() - 1; i) {
-                // Point point = lineString.getGeometry().getPoint(i);
-                // guiLineString.addPoint(new com.github.phalexei.sig.gui.Point(point.getX(), point.getY()));
-                // }
-                // com.github.phalexei.sig.gui.Point first = new com.github.phalexei.sig.gui.Point(lineString.getGeometry().getPoint(0).getX(), lineString.getGeometry().getPoint(0).getY());
-                // guiLineString.addPoint(first);
-                // panel.addPrimitive(guiLineString);
-                System.out.println(resultSet.getObject(1).toString());
+            	xMin = resultSet.getDouble(1);
+            	yMin = resultSet.getDouble(2);
+            	xMax = resultSet.getDouble(3);
+            	yMax = resultSet.getDouble(4);
             }
-            resultSet.close();
-            statement.close();
-
+           
+            Point pointMin = new Point(xMin, yMin);
+            Point pointMax = new Point(xMax, yMax);
+            
+            Point tmp = new Point(xMin, yMax);
+            
+            //calculate distance & pas
+            
+            //sqlrequest st_distance(pointmax,new point(xmin,ymax))
+            
+            String request = "SELECT ST_Distance("
+            		+"ST_GeomFromText('POINT("+pointMin.getX()+" "+pointMin.getY()+")',4326),"
+            		+"ST_GeomFromText('POINT("+tmp.getX()+" "+tmp.getY()+")',4326)"
+            		+")";
+            
+            resultSet = statement.executeQuery(request);
+            
+            double distance = 0;
+            while (resultSet.next()) {
+            	 distance = resultSet.getDouble(1);
+            }
+            
+            //km
+            System.out.println(distance);
+            //km
+            int pas = 100;
+            int nbcase = (int) (distance / pas);
+            int[] matrix = new int[nbcase];
+            
+            
+            //pour chaque case, requete intersect
+            	//count++ de la case
+            
             //display result
             // new GeoMainFrame("frame", panel);
+            
+            resultSet.close();
+            statement.close();
+            
 
         } catch (SQLException se) {
             System.err.println("Threw a SQLException creating the list of blogs.");
