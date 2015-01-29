@@ -10,7 +10,9 @@ public abstract class Question {
 
     public Question() {
     }
-
+    /**
+     * process the question X via the overrided method answerInternal()
+     */
     public final void answer() {
         this.connection = Utils.getConnection();
 
