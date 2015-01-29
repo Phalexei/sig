@@ -1,7 +1,6 @@
 package com.github.phalexei.sig;
 
 import com.github.phalexei.sig.questions.Question;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 public class Main {
 
@@ -17,8 +16,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             parseArguments(args).answer();
-        } catch (InvalidArgumentException e) {
-            System.out.println(e.getRealMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -28,7 +27,7 @@ public class Main {
      * @param args : array args (from main)
      * @return
      */
-    public static Question parseArguments(String[] args) throws InvalidArgumentException {
+    public static Question parseArguments(String[] args) throws IllegalArgumentException {
 
         int questionNumber = Integer.parseInt(args[0]);
         Character questionLetter = null;

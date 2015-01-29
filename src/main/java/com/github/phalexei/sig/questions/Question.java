@@ -1,7 +1,6 @@
 package com.github.phalexei.sig.questions;
 
 import com.github.phalexei.sig.database.Utils;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.sql.Connection;
 
@@ -26,7 +25,7 @@ public abstract class Question {
 
     public abstract void answerInternal();
 
-    public static Question newQuestion(int questionNumber, Character questionLetter, String arg) throws InvalidArgumentException {
+    public static Question newQuestion(int questionNumber, Character questionLetter, String arg) throws IllegalArgumentException {
         switch (questionNumber) {
             case 9:
                 return new Question9(arg);
@@ -39,7 +38,7 @@ public abstract class Question {
                     case 'c':
                         return new Question10c();
                     default:
-                        throw new InvalidArgumentException(new String[]{"Question 10 only has variants A, B or C." + questionLetter + " is invalid"});
+                        throw new IllegalArgumentException("Question 10 only has variants A, B or C." + questionLetter + " is invalid");
                 }
             case 11:
                 switch (Character.toLowerCase(questionLetter)) {
@@ -50,10 +49,10 @@ public abstract class Question {
                     case 'c':
                         return new Question11c();
                     default:
-                        throw new InvalidArgumentException(new String[]{"Question 11 only has variants A, B or C." + questionLetter + " is invalid"});
+                        throw new IllegalArgumentException("Question 11 only has variants A, B or C." + questionLetter + " is invalid");
                 }
             default:
-                throw new InvalidArgumentException(new String[]{"You must choose from question 9, 10 or 11"});
+                throw new IllegalArgumentException("You must choose from question 9, 10 or 11");
         }
     }
 }
