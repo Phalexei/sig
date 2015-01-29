@@ -14,30 +14,57 @@ import java.util.Random;
 
 public class Main {
 
-    public Main(String arg) {
-        if (!arg.isEmpty()) {
-            question9(arg);
-        }
-
-        question10_A();
-
-        question10_B();
-    	question10_C();
-    	question11a();
-		question11b();
+    public Main() {
+        
     }
 
+    /**
+     * 
+     * @param args
+     * 
+     * Arguments for 
+     * 
+     * Question9 : 9 dom__ne uni_er_it
+     * Question10_A : 10 A
+     * Question10_B : 10 B
+     * Question10_C : 10 C
+     * Question11_A : 11 A
+     * Question11_B : 11 B
+     */
     public static void main(String[] args) {
-        new Main(parseArguments(args));
+        
+        if(args[0].equals("9")){
+        	new Main().question9(parseArguments(args));
+        }else if (args[0].equals("10") && args[1].equals("A")){
+        	new Main().question10_A();
+        }else if (args[0].equals("10") && args[1].equals("B")){
+        	new Main().question10_B();
+        }else if (args[0].equals("10") && args[1].equals("C")){
+        	new Main().question10_C();
+        }else if (args[0].equals("11") && args[1].equals("A")){
+        	new Main().question11_A();
+        }else if (args[0].equals("10") && args[1].equals("B")){
+        	new Main().question11_B();
+        }else{
+        	System.out.println("Mauvais arguments");
+        	return;
+        }
     }
 
+    /**
+     * Concatenate strings for question 9
+     * @param args : array args (from main)
+     * @return
+     */
     public static String parseArguments(String[] args) {
+    	    	
         StringBuilder s = new StringBuilder();
-
-        for (String arg : args) {
-            System.out.println(arg);
-            s.append(arg).append(" ");
+        
+        for(int i = 1; i<args.length; i++){
+        	 System.out.println(args[i]);
+        	 s.append(args[i]).append(" ");
         }
+        
         if (s.length() != 0) {
             s.deleteCharAt(s.length() - 1);
         }
@@ -202,7 +229,7 @@ public class Main {
     /**
      * Question 11 A
      */
-    private void question11a() {
+    private void question11_A() {
         // Get DB connection
         Connection connection = Utils.getConnection();
         try {
@@ -243,7 +270,7 @@ public class Main {
 	/**
      * Question 11 B
      */
-    private void question11b() {
+    private void question11_B() {
         MapPanel panel = new MapPanel(844767, 6523077, 200000);
         //get result for railway
 		drawNoisyArea("railway", "rail", Color.RED, Color.GREEN, panel);
