@@ -4,9 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by andrepot on 29/01/15.
- */
 public class Question9 extends Question {
 
     private final String name;
