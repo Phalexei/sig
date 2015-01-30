@@ -32,7 +32,6 @@ public class Question9 extends Question {
             resultSet.close();
             statement.close();
         } catch (SQLException se) {
-            System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
         }
     }

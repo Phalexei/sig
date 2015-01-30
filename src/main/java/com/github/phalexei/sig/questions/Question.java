@@ -10,22 +10,6 @@ public abstract class Question {
 
     public Question() {
     }
-    /**
-     * process the question X via the overrided method answerInternal()
-     */
-    public final void answer() {
-        this.connection = Utils.getConnection();
-
-        this.answerInternal();
-
-        Utils.closeConnection();
-    }
-
-    protected final Connection getConnection() {
-        return this.connection;
-    }
-
-    public abstract void answerInternal();
 
     public static Question newQuestion(int questionNumber, Character questionLetter, String arg) throws IllegalArgumentException {
         switch (questionNumber) {
@@ -57,4 +41,21 @@ public abstract class Question {
                 throw new IllegalArgumentException("You must choose from question 9, 10 or 11");
         }
     }
+
+    /**
+     * process the question X via the overrided method answerInternal()
+     */
+    public final void answer() {
+        this.connection = Utils.getConnection();
+
+        this.answerInternal();
+
+        Utils.closeConnection();
+    }
+
+    protected final Connection getConnection() {
+        return this.connection;
+    }
+
+    public abstract void answerInternal();
 }

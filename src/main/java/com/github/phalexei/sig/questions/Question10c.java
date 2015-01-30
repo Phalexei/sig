@@ -40,7 +40,6 @@ public class Question10c extends Question {
             new GeoMainFrame("frame", panel);
 
         } catch (SQLException se) {
-            System.err.println("Threw a SQLException creating the list of blogs.");
             System.err.println(se.getMessage());
         }
 

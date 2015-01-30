@@ -34,7 +34,7 @@ public class Main {
         Character questionLetter = null;
         StringBuilder s = new StringBuilder();
 
-        if (questionNumber == 10 | questionNumber == 11 && args[1].length() == 1) {
+        if (questionNumber == 10 || questionNumber == 11 && args[1].length() == 1) {
             questionLetter = args[1].charAt(0);
         } else {
             for (int i = 1; i < args.length; i++) {
