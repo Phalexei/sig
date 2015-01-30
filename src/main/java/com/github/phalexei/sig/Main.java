@@ -12,7 +12,7 @@ public class Main {
      *             <li> Question10_C : 10 c
      *             <li> Question11_A : 11 a
      *             <li> Question11_B : 11 b
-     *             <li> Question11_B : 11 c
+     *             <li> Question11_B : 11 c pas_km
      */
     public static void main(String[] args) {
         try {
@@ -36,6 +36,9 @@ public class Main {
 
         if (questionNumber == 10 || questionNumber == 11 && args[1].length() == 1) {
             questionLetter = args[1].charAt(0);
+            if(questionNumber == 11 && questionLetter == 'c'){
+            	s.append(args[2]);
+            }
         } else {
             for (int i = 1; i < args.length; i++) {
                 System.out.println(args[i]);
@@ -46,7 +49,7 @@ public class Main {
                 s.deleteCharAt(s.length() - 1);
             }
         }
-
+        
         return Question.newQuestion(questionNumber, questionLetter, s.toString());
     }
 }

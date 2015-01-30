@@ -10,6 +10,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Question11c extends Question {
+	
+	private final int pas;
+	
+	 public Question11c(String arg) {
+	        this.pas = Integer.parseInt(arg);
+	    }
+	
     @Override
     public void answerInternal() {
         try {
@@ -33,7 +40,8 @@ public class Question11c extends Question {
 
             // corners of the whole matric
             com.github.phalexei.sig.gui.Point pointMin = new com.github.phalexei.sig.gui.Point(xMin, yMin);
-            com.github.phalexei.sig.gui.Point pointMax = new com.github.phalexei.sig.gui.Point(xMax, yMax);
+            @SuppressWarnings("unused")
+			com.github.phalexei.sig.gui.Point pointMax = new com.github.phalexei.sig.gui.Point(xMax, yMax);
             com.github.phalexei.sig.gui.Point tmp = new com.github.phalexei.sig.gui.Point(xMin, yMax);
             com.github.phalexei.sig.gui.Point tmp2 = new com.github.phalexei.sig.gui.Point(xMax, yMin);
 
@@ -56,7 +64,6 @@ public class Question11c extends Question {
                 distanceX = resultSet.getDouble(2);
             }
 
-            int pas = 10000;
             int nbcaseX = (int) (distanceX / pas);
             int nbcaseY = (int) (distanceY / pas);
             int[][] matrix = new int[nbcaseX][nbcaseY];

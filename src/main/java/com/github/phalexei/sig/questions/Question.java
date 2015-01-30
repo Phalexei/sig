@@ -33,7 +33,7 @@ public abstract class Question {
                     case 'b':
                         return new Question11b();
                     case 'c':
-                        return new Question11c();
+                        return new Question11c(arg);
                     default:
                         throw new IllegalArgumentException("Question 11 only has variants a, b or c." + questionLetter + " is invalid");
                 }
