@@ -6,7 +6,7 @@ public class Main {
 
     /**
      * @param args Arguments for
-     *             <li> Question9 : 9 dom__ne uni_er_it%
+     *             <li> Question9 : 9 Dom__ne uni_er_it%
      *             <li> Question10_A : 10 a
      *             <li> Question10_B : 10 b
      *             <li> Question10_C : 10 c

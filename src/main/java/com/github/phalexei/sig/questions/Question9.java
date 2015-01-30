@@ -23,6 +23,7 @@ public class Question9 extends Question {
             //add string
             statement.setString(1, name);
             //execute request
+            System.out.println(statement.toString());
             ResultSet resultSet = statement.executeQuery();
             //display result
             System.out.println("Résultats question 9 :");
