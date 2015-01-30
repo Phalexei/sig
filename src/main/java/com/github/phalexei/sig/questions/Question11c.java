@@ -1,7 +1,10 @@
 package com.github.phalexei.sig.questions;
 
+import com.github.phalexei.sig.gui.GeoMainFrame;
 import com.github.phalexei.sig.gui.MapPanel;
+import com.github.phalexei.sig.gui.Polygon;
 
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,40 +34,55 @@ public class Question11c extends Question {
             	yMax = resultSet.getDouble(4);
             }
            
-            Point pointMin = new Point(xMin, yMin);
-            Point pointMax = new Point(xMax, yMax);
+            com.github.phalexei.sig.gui.Point pointMin = new com.github.phalexei.sig.gui.Point(xMin, yMin);
+            com.github.phalexei.sig.gui.Point pointMax = new com.github.phalexei.sig.gui.Point(xMax, yMax);
             
-            Point tmp = new Point(xMin, yMax);
+            com.github.phalexei.sig.gui.Point tmp = new com.github.phalexei.sig.gui.Point(xMin, yMax);
             
-            //calculate distance & pas
-            
-            //sqlrequest st_distance(pointmax,new point(xmin,ymax))
-            
+            //calculate distance & pas (meter)
+             
             String request = "SELECT ST_Distance("
-            		+"ST_GeomFromText('POINT("+pointMin.getX()+" "+pointMin.getY()+")',4326),"
-            		+"ST_GeomFromText('POINT("+tmp.getX()+" "+tmp.getY()+")',4326)"
+            		+"ST_Transform(ST_GeomFromText('POINT("+pointMin.getX()+" "+pointMin.getY()+")',4326),26986),"
+            		+"ST_Transform(ST_GeomFromText('POINT("+tmp.getX()+" "+tmp.getY()+")',4326),26986)"
             		+")";
             
+            
             resultSet = statement.executeQuery(request);
+            
+            System.out.println(statement.toString());
             
             double distance = 0;
             while (resultSet.next()) {
             	 distance = resultSet.getDouble(1);
             }
-            
-            //km
+           
             System.out.println(distance);
-            //km
-            int pas = 100;
+           
+            int pas = 10000;
             int nbcase = (int) (distance / pas);
+            System.out.println(nbcase);
             int[] matrix = new int[nbcase];
             
+            Polygon p = new Polygon(Color.RED, Color.BLACK);
+            p.addPoint(pointMin);
+            p.addPoint(tmp);
+            p.addPoint(new com.github.phalexei.sig.gui.Point(xMax, yMin));
+            p.addPoint(pointMax);
+           
+            
+            
+            MapPanel panel = new MapPanel(2, 46, 200);
+            panel.addPrimitive(p);
+           
+          
+           
+            new GeoMainFrame("frame", panel);
             
             //pour chaque case, requete intersect
             	//count++ de la case
             
             //display result
-            // new GeoMainFrame("frame", panel);
+             
             
             resultSet.close();
             statement.close();
