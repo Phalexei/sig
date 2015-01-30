@@ -37,10 +37,14 @@ public class Question11c extends Question {
             com.github.phalexei.sig.gui.Point pointMin = new com.github.phalexei.sig.gui.Point(xMin, yMin);
             com.github.phalexei.sig.gui.Point pointMax = new com.github.phalexei.sig.gui.Point(xMax, yMax);
             
+            //System.out.println(pointMin.getX());
+            //System.out.println(pointMin.getY());
+            //System.out.println(pointMax.getX());
+            //System.out.println(pointMax.getY());
+            
             com.github.phalexei.sig.gui.Point tmp = new com.github.phalexei.sig.gui.Point(xMin, yMax);
             
             //calculate distance & pas (meter)
-             
             String request = "SELECT ST_Distance("
             		+"ST_Transform(ST_GeomFromText('POINT("+pointMin.getX()+" "+pointMin.getY()+")',4326),26986),"
             		+"ST_Transform(ST_GeomFromText('POINT("+tmp.getX()+" "+tmp.getY()+")',4326),26986)"
@@ -49,37 +53,45 @@ public class Question11c extends Question {
             
             resultSet = statement.executeQuery(request);
             
-            System.out.println(statement.toString());
+            //System.out.println(statement.toString());
             
             double distance = 0;
             while (resultSet.next()) {
             	 distance = resultSet.getDouble(1);
             }
-           
-            System.out.println(distance);
-           
+            
+            //System.out.println("distance (m) : "+distance);
+            
             int pas = 10000;
             int nbcase = (int) (distance / pas);
-            System.out.println(nbcase);
-            int[] matrix = new int[nbcase];
-            
-            Polygon p = new Polygon(Color.RED, Color.BLACK);
-            p.addPoint(pointMin);
-            p.addPoint(tmp);
-            p.addPoint(new com.github.phalexei.sig.gui.Point(xMax, yMin));
-            p.addPoint(pointMax);
-           
-            
-            
-            MapPanel panel = new MapPanel(2, 46, 200);
-            panel.addPrimitive(p);
-           
+            System.out.println("matrice de :"+nbcase+"x"+nbcase);
+            int [][] matrix = new int[nbcase][nbcase];
           
-           
-            new GeoMainFrame("frame", panel);
             
-            //pour chaque case, requete intersect
-            	//count++ de la case
+            // get all buildings and fill matrix
+            double pasX = (xMax-xMin) / nbcase;
+            double pasY = (yMax-yMin) / nbcase;
+            
+            System.out.println("pas x : "+pasX);
+            System.out.println("pas y : "+pasY);
+            
+            String requestBuilding = "select ST_X(ST_Centroid(bbox)), ST_Y(ST_Centroid(bbox)) from ways where tags ? 'building'";
+            resultSet = statement.executeQuery(requestBuilding);
+   		 	while (resultSet.next()) {
+   		 		
+   		 		double x = resultSet.getDouble(1);
+   		 		double y = resultSet.getDouble(2);
+   		 		
+   		 		matrix[(int) ((x -xMin) / pasX)][(int) ((y - yMin) / pasY)] += 1;
+   		
+   		 	}
+            
+            /*for (int i = 0; i < nbcase; i++){
+            	for (int j = 0; j < nbcase; j++){
+                	System.out.print(matrix[i][j]+" ");
+                }
+            	System.out.println();
+            }*/
             
             //display result
              
